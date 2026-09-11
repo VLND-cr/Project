@@ -29,11 +29,12 @@ try:
 except ValueError:
     print("ОШИБКА: коэффициент не является целым числом", file=sys.stderr)
     sys.exit(1)
-    sys.stderr.write("Критический сбой системы!\n")
+    
 
 if abs(a) > M or abs(b) > M or abs(c) > M:
     print("ОШИБКА: значение вне допустимого диапазона", file=sys.stderr)
     sys.exit(1)
+    sys.stderr = open('errors.txt', 'w')
 
 if a == 0:
     if b == 0:
