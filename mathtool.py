@@ -53,7 +53,7 @@ def read_numbers(path):
     return values
 
 def check_values(values):
-    """Проверяет список чисел на допустимость."""
+    
     if not values:
         raise ValueError("последовательность пуста")
     if len(values) > stats.MAX_COUNT:
