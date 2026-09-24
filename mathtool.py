@@ -34,14 +34,14 @@ except ValueError:
 if abs(a) > M or abs(b) > M or abs(c) > M:
     print("ОШИБКА: значение вне допустимого диапазона", file=sys.stderr)
     sys.exit(1)
-    sys.stderr = open('errors.txt', 'w')
+    
 
 if a == 0:
     if b == 0:
         print("ОШИБКА: это не уравнение, неизвестное отсутствует", file=sys.stderr)
         sys.exit(1)
     print("Уравнение линейное")
-    print(f"x = {-c/b:.3f}")
+    print(f"x = {int(-c/b)}")
 else:
     print("Уравнение квадратное")
     D = b*b - 4*a*c
