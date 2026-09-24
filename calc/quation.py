@@ -10,23 +10,21 @@ try:
     elif len(sys.argv) == 8 and sys.argv[2] == '-a' and sys.argv[4] == '-b' and sys.argv[6] == '-c':
         a, b, c = int(sys.argv[3]), int(sys.argv[5]), int(sys.argv[7])
     else:
-        print("ОШИБКА: неверный набор параметров", file=sys.stderr)
-        sys.exit(1)
+        raise ValueError("ОШИБКА: неверный набор параметров")
 except ValueError:
-    print("ОШИБКА: коэффициент не является целым числом", file=sys.stderr)
-    sys.exit(1)
+    raise ValueError('ОШИБКА: коэффициент не является целым числом')
     
 
 
 
 if abs(a) > MAX_VALUE or abs(b) > MAX_VALUE or abs(c) > MAX_VALUE:
-    print("ОШИБКА: значение вне допустимого диапазона", file=sys.stderr)
-    sys.exit(1)
+    raise ValueError("ОШИБКА: значение вне допустимого диапазона")
+     
+
     
 if a == 0:
     if b == 0:
-        print("ОШИБКА: это не уравнение, неизвестное отсутствует", file=sys.stderr)
-        sys.exit(1)
+        raise ValueError ('ОШИБКА: это не уравнение, неизвестное отсутствует')
     print("Уравнение линейное")
     print(f"x = {int(-c/b)}")
 else:
