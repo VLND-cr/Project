@@ -116,7 +116,7 @@ def handle_series(args):
     print(f"Сумма ряда: {result:.{series.DIGITS}f}")
     return 0
 
-# ---------- обработчик integrate ----------
+#обработчик integrate
 
 def handle_integrate(args):
     
@@ -145,6 +145,8 @@ def handle_integrate(args):
 
 
 HANDLERS = {
+    # Словарь «имя команды → функция-обработчик».
+    # Имена функций без скобок — это сами функции.
     "solve":     handle_solve,
     "stats":     handle_stats,
     "series":    handle_series,
@@ -152,17 +154,21 @@ HANDLERS = {
 }
 
 def main(argv):
-    
-    parser = build_parser()
-    args = parser.parse_args(argv)
-    if args.command is None:
-        parser.print_help()
-        return 0
-    try:
-        return HANDLERS[args.command](args)
-    except (ValueError, OSError) as error:
-        print(f"ОШИБКА: {error}", file=sys.stderr)
-        return 1
+    """Разбирает параметры, вызывает обработчик, возвращает код."""
+    parser = build_parser()                       # создаём разборщик
+    args = parser.parse_args(argv)                # разбор списка параметров без имени программы
+                                                  # при ошибке argparse сам завершит работу с кодом 2
+    if args.command is None:                      # команда не указана
+        parser.print_help()                       # печатаем справку в stdout
+        return 0                                  
+    try:                                          # пробуем выполнить команду
+        return HANDLERS[args.command](args)       # вызов обработчика по имени команды
+    except (ValueError, OSError) as error:        # ValueError — ошибки в данных,
+                                                  # OSError — несуществующий файл в stats
+        print(f"ОШИБКА: {error}", file=sys.stderr)   
+        return 1                                  
 
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+if __name__ == "__main__":                        # только при прямом запуске файла
+                                                  # при импорте __name__ не равен "__main__"
+    sys.exit(main(sys.argv[1:]))                  # единственный sys.exit во всём приложении
+                                                  
