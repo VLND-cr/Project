@@ -140,37 +140,6 @@ def handle_integrate(args):
     print(f"Значение интеграла: {value:.{integration.DIGITS}f}")
     return 0
 
-#обработчик fill
-def handle_fill(args):
-    if not 1<= args.count <= arrays.MAX_COUNT:
-        raise ValueError(f'количество элементов вне диапозона 1..{arrays.MAX_COUNT}')
-    if args.min_value < arrays.MIN_VALUE or args.max_value >arrays.MAX_VALUE:
-        raise ValueError(
-            f'границы значений вне диапозона'
-            f'{arrays.MIN_VALUE}..{arrays.MAX_VALUE}'
-        )
-    if args.min_value > args.max_value:
-        raise ValueError("минимум больше максимума")
-
-    values = arrays.fill(
-        args.count,
-        args.min_value,
-        args.max_value,
-        args.seed,
-    )
-
-    if args.output:
-        write_array(args.output, values)
-        print(f"Записано элементов: {len(values)} в файл {args.output}")
-    else:
-        print_array(values)
-    return 0 
-
-
-
-
-
-
 def read_array(path):
     if path:
         with open(path, encoding="utf-8-sig") as handle:
@@ -205,6 +174,57 @@ def read_array(path):
 def write_array(path, values):
     with open(path,'w', encoding="utf-8") as handle:
         handle.write(''.join(str(x) for x in values) + '\n')
+
+def print_array(path, values):
+    print(' '.join(str(x) for x in values))
+
+#обработчик fill
+def handle_fill(args):
+    if not 1<= args.count <= arrays.MAX_COUNT:
+        raise ValueError(f'количество элементов вне диапозона 1..{arrays.MAX_COUNT}')
+    if args.min_value < arrays.MIN_VALUE or args.max_value >arrays.MAX_VALUE:
+        raise ValueError(
+            f'границы значений вне диапозона'
+            f'{arrays.MIN_VALUE}..{arrays.MAX_VALUE}'
+        )
+    if args.min_value > args.max_value:
+        raise ValueError("минимум больше максимума")
+
+    values = arrays.fill(
+        args.count,
+        args.min_value,
+        args.max_value,
+        args.seed,
+    )
+
+    if args.output:
+        write_array(args.output, values)
+        print(f"Записано элементов: {len(values)} в файл {args.output}")
+    else:
+        print_array(values)
+    return 0 
+
+#обраюотчик sort
+def handle_sort(args):
+    values = read_array(args.input)
+    method = sorting.METHODS[args.method]
+    descending = args.order == 'desc'
+
+    measure(f'sort({args.method})', method, [values, descending])
+
+    if args.output:
+        write_array(args.output, values)
+        print(f'Записано элементов: {len(values)} в файл {args.output}')
+    else:
+        print_array(values)
+
+    print("Массив отсортирован")
+    return 0
+
+
+
+
+
 
 
 
