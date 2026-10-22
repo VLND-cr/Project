@@ -92,15 +92,6 @@ def handle_stats(args):
             print(f"{label}: {value:{fmt}}")
     return 0
 
-
-
-
-
-
-
-
-
-
 def handle_series(args):
     
     term, formula = series.FORMULAS[args.func]
@@ -149,6 +140,37 @@ def handle_integrate(args):
     print(f"Значение интеграла: {value:.{integration.DIGITS}f}")
     return 0
 
+#обработчик fill
+def handle_fill(args):
+    if not 1<= args.count <= arrays.MAX_COUNT:
+        raise ValueError(f'количество элементов вне диапозона 1..{arrays.MAX_COUNT}')
+    if args.min_value < arrays.MIN_VALUE or args.max_value >arrays.MAX_VALUE:
+        raise ValueError(
+            f'границы значений вне диапозона'
+            f'{arrays.MIN_VALUE}..{arrays.MAX_VALUE}'
+        )
+    if args.min_value > args.max_value:
+        raise ValueError("минимум больше максимума")
+
+    values = arrays.fill(
+        args.count,
+        args.min_value,
+        args.max_value,
+        args.seed,
+    )
+
+    if args.output:
+        write_array(args.output, values)
+        print(f"Записано элементов: {len(values)} в файл {args.output}")
+    else:
+        print_array(values)
+    return 0 
+
+
+
+
+
+
 def read_array(path):
     if path:
         with open(path, encoding="utf-8-sig") as handle:
@@ -180,6 +202,9 @@ def read_array(path):
         arrays.check_values(values)
         return values
 
+def write_array(path, values):
+    with open(path,'w', encoding="utf-8") as handle:
+        handle.write(''.join(str(x) for x in values) + '\n')
 
 
 
