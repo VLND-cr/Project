@@ -1,4 +1,4 @@
-import sys, math
+import sys, math, time
 
 from calc import equation, series, stats, integration, arrays, sorting
 from cli import build_parser
@@ -178,6 +178,17 @@ def write_array(path, values):
 def print_array(path, values):
     print(' '.join(str(x) for x in values))
 
+def measure(name, operation, parameters):
+    start = time.perf_counter()
+    result = operation(*parameters)
+    elapsed = time.perf_counter()-start
+
+    print(
+        f'Время операции {name}: {elapsed:.6f} c',
+        file = sys.stderr
+    )
+    
+
 #обработчик fill
 def handle_fill(args):
     if not 1<= args.count <= arrays.MAX_COUNT:
@@ -221,12 +232,20 @@ def handle_sort(args):
     print("Массив отсортирован")
     return 0
 
-
-
-
-
-
-
+#обработчик двоичного поиска
+def handle_search(args):
+    if abs(args.value) > arrays.MAX_SEARCH:
+        raise ValueError(
+            f'Модуль искомого значения больше {arrays.MAX_SEARCH}'
+        )
+    values = read_array(args.input)
+    arrays.check_sorted_ascending(values)
+    index = arrays.binary_search(values, args.value)
+    if index is None:
+        print(f'Значение {args.value} не найдено')
+        return 1
+    print(f'Значение {args.value} имккет элемент с индексом {index + 1}.')
+    return 0
 
 HANDLERS = {
     # Словарь «имя команды → функция-обработчик».
