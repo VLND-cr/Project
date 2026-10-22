@@ -2,7 +2,7 @@
 
 import argparse
 
-from calc import series, integration
+from calc import series, integration, arrays, sorting
 
 def build_parser():
     """Создаёт и возвращает разборщик параметров."""
@@ -24,6 +24,47 @@ def build_parser():
     p = subs.add_parser("stats", help="показатели числовой последовательности",
                         allow_abbrev=False)
     p.add_argument("--input", help="файл с числами")
+
+    #fill
+    p = subs.add_parser(
+        "fill",
+        help = 'генерация случайного массива',
+        allow_abbrev=False,
+    )
+    p.add_argument('-c', '--count', type=int, required=True, 
+                   help="количество лементов")
+    p.add_argument('--min', dest = 'min_value', type = int,
+                   default=arrays.MIN_VALUE, help = 'нижняя граница значений')
+    p.add_argument('--max', dest = 'max_value', type = int,
+                   default=arrays.MAX_VALUE, help = "верхняя граница значений")
+    p.add_argument('--seed', type = int, default=None,
+                   help = 'начальное значение генератора')
+    p.add_argument('-o', '--output', help = 'файл для созданного массива')
+
+    #sort
+    p = subs.add_parser(
+        'sort',
+        help = 'сортировка массива',
+        allow_abbrev=False,
+    )
+
+    p.add_argument('-m', '--method', required= True,
+                   choices = sorted(sorting.METHODS),
+                   help = 'метод сортировки')
+    p.add_argument('--order', choices=['asc', 'desc'], default='asc',
+                   help = 'направление сортировки')
+    p.add_argument('-i', '--input', help = 'файл с исходным массивом')
+    p.add_argument('-o', '--output', help = 'файл для отсортированного массива')
+
+    #search
+    p =subs.add_parser(
+        "search",
+        help = 'двоичный поиск в упорядоченном массиве',
+        allow_abbrev=False,
+    )
+    p.add_argument('-v', '--value', type = int, required=True,
+                   help="искомое целое число")
+    p.add_argument('-i', '--input', help = 'файл с массивом по возрастанию')
 
     # series
     p = subs.add_parser("series", help="сумма ряда", allow_abbrev=False)

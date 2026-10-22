@@ -17,9 +17,15 @@ def term_third(n):
     
     return sign(n) / (3 * n)
 
+def term_p(n):
+
+    return sign(n)/ (n^3 - 12)
+
 FORMULAS = {
     "sqplus": (term_sqplus, "S = 1/(1^2+1) - 1/(2^2+1) + 1/(3^2+1) - ..."),
     "third":  (term_third,  "S = 1/3 - 1/6 + 1/9 - ..."),
+    "two": (term_p, "S = 1/(-11)")
+
 }
 
 def sum_by_count(term, count):

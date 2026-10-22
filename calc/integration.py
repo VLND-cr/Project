@@ -14,7 +14,7 @@ def f_root(x):
 
 FUNCTIONS = {
     "ratio": (f_ratio, "F(x) = x / (x + 1)",    0, 20, True),
-    "root":  (f_root,  "F(x) = sqrt(x^2 + 1)", -5,  5, False),
+    "root":  (f_root,  "F(x) = sqrt(x^2 + 1)", -5,  5, True),
 }
 
 def integrate(func, a, b, steps):
