@@ -1,6 +1,6 @@
 import sys, math
 
-from calc import equation, series, stats, integration
+from calc import equation, series, stats, integration, arrays, sorting
 from cli import build_parser
 
 
@@ -149,6 +149,38 @@ def handle_integrate(args):
     print(f"Значение интеграла: {value:.{integration.DIGITS}f}")
     return 0
 
+def read_array(path):
+    if path:
+        with open(path, encoding="utf-8-sig") as handle:
+            text = handle.read()
+    else:
+        lines = []
+        print("Введите массив (пустая строка - конец):",
+              file = sys.stderr, end = "")
+
+        while True:
+            try:
+                line = input()
+            except EOFError:
+                break
+            if not line.strip():
+                break
+            lines.append(line)
+
+        text = text.replace(',','')
+        words = text.split()
+
+        values = []
+        for word in words:
+            try:
+                values.append(int(word))
+            except ValueError:
+                raise ValueError(f'{word} не является целым числом')
+
+        arrays.check_values(values)
+        return values
+
+
 
 
 HANDLERS = {
@@ -158,6 +190,9 @@ HANDLERS = {
     "stats":     handle_stats,
     "series":    handle_series,
     "integrate": handle_integrate,
+    "fill": handle_fill,
+    'sort': handle_sort,
+    'search': handle_search,
 }
 
 def main(argv):
